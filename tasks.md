@@ -154,8 +154,9 @@
 - **Evidence**: `Program.cs` plus a negotiate request against `/notificationHub` succeeding.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `POST /notificationHub/negotiate?negotiateVersion=1` against the API run from the SDK container on host port 5000: **HTTP 200** with `connectionId`, `connectionToken` and WebSockets/ServerSentEvents/LongPolling in `availableTransports`. `builder.Services.AddSignalR()` and `app.MapHub<NotificationHub>("/notificationHub")` are the two registrations; CORS is deliberately not part of this task.
 ### Stream: `API`
 
 #### Task ID: T-1.API.01
