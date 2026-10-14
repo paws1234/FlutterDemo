@@ -184,8 +184,9 @@
 - **Evidence**: the endpoint invoked through Swagger/Postman for each of the three codes, plus the assertions in T-1.TST.02 and T-1.TST.01.
 - **Estimated Effort**: M
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — against the API run from the SDK container on port 5000: valid status on a known id → **HTTP 200**; empty status → **HTTP 400** "Status must be a non-empty string."; whitespace-only status → **HTTP 400**; unknown id 99 → **HTTP 404**. Validation sits before the broadcast, so the 400 path cannot broadcast; state is in-memory (`IOrderStatusService`, singleton) because §1 excludes persistent history.
 ### Stream: `CFG`
 
 #### Task ID: T-1.CFG.01
