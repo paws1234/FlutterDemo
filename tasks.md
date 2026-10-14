@@ -140,8 +140,9 @@
 - **Evidence**: `src/Notification.Api/Hubs/NotificationHub.cs` plus a check that the file references no data-access type.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `tests/check_hub_is_conduit.sh` → **"OK: … derives from Hub, logs the lifecycle, and names no data-access type"**; `dotnet build src/Notification.Api` → "Build succeeded. 0 Warning(s) 0 Error(s)". Lifecycle logging is injected `ILogger<NotificationHub>`; the class holds no rules and no data access.
 #### Task ID: T-1.HUB.02
 - **Title**: Register SignalR and map the `/notificationHub` route
 - **Description**: Register the SignalR services (`builder.Services.AddSignalR()`) and map the hub (`app.MapHub<NotificationHub>("/notificationHub")`) in `Program.cs`, so clients can negotiate a connection on the route the contract names.
