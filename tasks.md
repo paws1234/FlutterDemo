@@ -120,12 +120,13 @@
 - **Evidence**: the contract file's path and content (reviewable). No runnable check — the deliverable is a written contract, and §10 requires no test for it.
 - **Estimated Effort**: S
 - **Owner Role**: Architect
-- **Status**: TODO
+- **Status**: DONE
 
 ---
 
 ## Phase 1 — Backend Foundation + Docker Compose
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — contract written to `CONTRACT.md` (event name `ReceiveOrderStatus`, route `/notificationHub`, positional `args[0]` `int orderId` / `args[1]` `string status`, camelCase on the wire, richer §3.3 DTO explicitly not adopted). No runnable check, as the ledger says: the deliverable is a written contract.
 ### Stream: `HUB`
 
 #### Task ID: T-1.HUB.01
