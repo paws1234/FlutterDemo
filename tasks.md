@@ -260,8 +260,9 @@
 - **Evidence**: the check's run output against the compose-hosted API.
 - **Estimated Effort**: M
 - **Owner Role**: QA / Test Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `python3 tests/check_phase1_integration.py` against the compose-hosted API (a real SignalR client over the JSON protocol, connected with a browser `Origin`): **10/10 PASS** — negotiates on host port 5000, handshake `{}`, valid status → 200 and exactly **one** `ReceiveOrderStatus` with `[1, "Out for Delivery"]`, empty status → **400 "Status must be a non-empty string."** with **nothing broadcast**, unknown id 999 → **404** with nothing broadcast. Exit 0.
 ### Phase Exit Gate
 
 #### Task ID: T-1.X.GATE
