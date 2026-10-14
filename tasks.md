@@ -216,8 +216,9 @@
 - **Evidence**: the `docker build` output plus a request served by the running container.
 - **Estimated Effort**: S
 - **Owner Role**: DevOps Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `docker build -t notification-api:local src/Notification.Api` succeeded from the multi-stage `Dockerfile`, and the running container answered `POST /notificationHub/negotiate?negotiateVersion=1` with **HTTP 200** while the host has **no** .NET SDK (`command -v dotnet` → missing), which is the criterion. Added `src/Notification.Api/.dockerignore` so local `bin/`/`obj/` cannot be baked into the build stage.
 #### Task ID: T-1.OPS.02
 - **Title**: `docker-compose.yml` — one-command backend on a stable port
 - **Description**: Add the compose file of §6.1 with a single `api` service building `context: ./src/Notification.Api`, publishing `5000:8080`, and setting `ASPNETCORE_ENVIRONMENT=Development` and `ASPNETCORE_URLS=http://+:8080`. Keep the future `redis` backplane service present but commented, as §6.1 shows, so the scale-out path is visible without being enabled.
