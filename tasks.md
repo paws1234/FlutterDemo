@@ -281,12 +281,13 @@
 - **Evidence**: the compose run output, the T-1.TST.02 integration check, and the port/route probe.
 - **Estimated Effort**: S
 - **Owner Role**: Tech Lead
-- **Status**: TODO
+- **Status**: DONE
 
 ---
 
 ## Phase 2 — Flutter Client Core
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — verified in the tree from a clean `docker compose down`, not from the earlier containers. 1) `docker compose up --build` brought the API online (container `demo-api-1`, `0.0.0.0:5000->8080/tcp`). 2) A valid status reached a genuinely connected client: one `ReceiveOrderStatus` with `[1, "Out for Delivery"]`. 3) Invalid input returned **400**. 4) The API is reachable on **port 5000** (`ss` shows the listener; negotiate 200). 5) One command started a working backend. Evidence: the compose output, the port/route probe and `tests/check_phase1_integration.py` (10/10 PASS, exit 0).
 ### Stream: `CONN`
 
 #### Task ID: T-2.CONN.01
