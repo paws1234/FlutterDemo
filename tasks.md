@@ -230,8 +230,9 @@
 - **Evidence**: the `docker compose up --build` output plus the API reachable at `http://localhost:5000/notificationHub`.
 - **Estimated Effort**: M
 - **Owner Role**: DevOps Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `docker compose up --build` started `demo-api-1` on **`0.0.0.0:5000->8080/tcp`** and `POST /notificationHub/negotiate?negotiateVersion=1` on host **port 5000** returned **HTTP 200**; `docker compose config` validates; the `redis` service is present as a commented future option and multi-instance scaling stays out of the demo (§1). No host .NET SDK involved.
 ### Stream: `TST`
 
 #### Task ID: T-1.TST.01
