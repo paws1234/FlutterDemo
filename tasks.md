@@ -90,8 +90,9 @@
 - **Evidence**: `src/Notification.Api/` — the directory listing plus one clean `dotnet build` of that project.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `dotnet build src/Notification.Api` in the `mcr.microsoft.com/dotnet/sdk:8.0` container: **"Build succeeded. 0 Warning(s) 0 Error(s)"**. `Program.cs` is the composition root (`builder.Services.AddControllers()`); the four §3.1 folders are tracked via `.gitkeep`. The host has no .NET SDK, so every C# check in this batch runs in that container.
 #### Task ID: T-0.STR.02
 - **Title**: Scaffold the Flutter app with the §4.1 `lib/` layout
 - **Description**: Create the Flutter application and the `lib/` tree §4.1 specifies: `lib/core/signalr/` (for `signalr_service.dart`, `signalr_connection_state.dart`), `lib/core/models/` (`order_status.dart`), `lib/features/order_tracker/data/` (`order_repository.dart`), `lib/features/order_tracker/presentation/` (`order_tracker_page.dart`, `order_status_badge.dart`), and `lib/main.dart`. Create the folders and the entry point; the files' contents belong to Phases 2–3.
