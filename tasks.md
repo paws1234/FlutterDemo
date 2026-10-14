@@ -104,8 +104,9 @@
 - **Evidence**: the `lib/` listing plus the `flutter analyze` output.
 - **Estimated Effort**: S
 - **Owner Role**: Mobile Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `flutter create --project-name order_tracker --platforms=android,ios,web .` then `flutter analyze`: **"No issues found! (ran in 1.1s)"**. All six §4.1 `lib/` paths exist (verified individually) plus `lib/main.dart` as the entry point; the generated counter-app `test/widget_test.dart` was removed because it tested a widget this skeleton does not have, and the Flutter ignore rules were added to `.gitignore` (which `flutter create` left untouched).
 ### Stream: `CTR`
 
 #### Task ID: T-0.CTR.01
