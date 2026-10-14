@@ -170,8 +170,9 @@
 - **Evidence**: the DI registration in `Program.cs` plus the controller's constructor signature.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `OrdersController` takes `IHubContext<NotificationHub>` by constructor injection (line 16) and the context comes from `builder.Services.AddSignalR()`; no static or global accessor. `dotnet build` → "Build succeeded. 0 Warning(s) 0 Error(s)". Activation is proved at runtime by the 200 in `T-1.API.02`, which is the first request that reaches the controller.
 #### Task ID: T-1.API.02
 - **Title**: Implement `POST /{id}/status` — validate, then broadcast
 - **Description**: Implement the endpoint that validates the incoming status, and on success updates state and broadcasts `await _hubContext.Clients.All.SendAsync("ReceiveOrderStatus", id, status)` before returning 200. Reject invalid input with 400 **before** any broadcast; return 404 for an unknown order id. Keep validation, business rules and any transaction logic in the controller/service, never in the hub.
