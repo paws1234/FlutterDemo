@@ -246,8 +246,9 @@
 - **Evidence**: the test file plus a green run of it.
 - **Estimated Effort**: M
 - **Owner Role**: QA / Test Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `dotnet test tests/Notification.Api.Tests` → **"Passed! - Failed: 0, Passed: 4, Skipped: 0"**. The mock is Moq over `IHubContext<NotificationHub>`/`IHubClients`/`IClientProxy`; the state is the in-memory service, so no live hub and no database. Negative control: swapping the broadcast args made the suite **red** (`Assert.Equal() Failure: Collections differ`, Failed: 1) and reverting restored green — the check is not vacuous.
 #### Task ID: T-1.TST.02
 - **Title**: Integration check against the Compose-hosted API
 - **Description**: With the backend up via `docker compose up`, connect a test client to `/notificationHub`, `POST /{id}/status` with a valid status, and assert the client receives `ReceiveOrderStatus` with the correct args. Then POST an invalid status, assert the 400 response, and assert that **no** message was broadcast.
