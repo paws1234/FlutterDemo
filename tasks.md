@@ -200,8 +200,9 @@
 - **Evidence**: `appsettings.json` showing `Cors:AllowedOrigins` plus a successful cross-origin connect.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — default `["*"]`: negotiate with `Origin` returns **`Access-Control-Allow-Origin: *`** and a real WebSocket connect with that `Origin` completes (handshake `{}`). Re-run with `Cors__AllowedOrigins__0=http://localhost:8080`: that origin is echoed back and an unconfigured `http://evil.example` gets **no** CORS header — so the list is read from configuration, not a literal. The demo-only label sits on the list in `appsettings.json` (the file still parses).
 ### Stream: `OPS`
 
 #### Task ID: T-1.OPS.01
