@@ -90,8 +90,9 @@
 - **Evidence**: `src/Notification.Api/` — the directory listing plus one clean `dotnet build` of that project.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `dotnet build src/Notification.Api` in the `mcr.microsoft.com/dotnet/sdk:8.0` container: **"Build succeeded. 0 Warning(s) 0 Error(s)"**. `Program.cs` is the composition root (`builder.Services.AddControllers()`); the four §3.1 folders are tracked via `.gitkeep`. The host has no .NET SDK, so every C# check in this batch runs in that container.
 #### Task ID: T-0.STR.02
 - **Title**: Scaffold the Flutter app with the §4.1 `lib/` layout
 - **Description**: Create the Flutter application and the `lib/` tree §4.1 specifies: `lib/core/signalr/` (for `signalr_service.dart`, `signalr_connection_state.dart`), `lib/core/models/` (`order_status.dart`), `lib/features/order_tracker/data/` (`order_repository.dart`), `lib/features/order_tracker/presentation/` (`order_tracker_page.dart`, `order_status_badge.dart`), and `lib/main.dart`. Create the folders and the entry point; the files' contents belong to Phases 2–3.
@@ -103,8 +104,9 @@
 - **Evidence**: the `lib/` listing plus the `flutter analyze` output.
 - **Estimated Effort**: S
 - **Owner Role**: Mobile Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `flutter create --project-name order_tracker --platforms=android,ios,web .` then `flutter analyze`: **"No issues found! (ran in 1.1s)"**. All six §4.1 `lib/` paths exist (verified individually) plus `lib/main.dart` as the entry point; the generated counter-app `test/widget_test.dart` was removed because it tested a widget this skeleton does not have, and the Flutter ignore rules were added to `.gitignore` (which `flutter create` left untouched).
 ### Stream: `CTR`
 
 #### Task ID: T-0.CTR.01
@@ -118,12 +120,13 @@
 - **Evidence**: the contract file's path and content (reviewable). No runnable check — the deliverable is a written contract, and §10 requires no test for it.
 - **Estimated Effort**: S
 - **Owner Role**: Architect
-- **Status**: TODO
+- **Status**: DONE
 
 ---
 
 ## Phase 1 — Backend Foundation + Docker Compose
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — contract written to `CONTRACT.md` (event name `ReceiveOrderStatus`, route `/notificationHub`, positional `args[0]` `int orderId` / `args[1]` `string status`, camelCase on the wire, richer §3.3 DTO explicitly not adopted). No runnable check, as the ledger says: the deliverable is a written contract.
 ### Stream: `HUB`
 
 #### Task ID: T-1.HUB.01
@@ -137,8 +140,9 @@
 - **Evidence**: `src/Notification.Api/Hubs/NotificationHub.cs` plus a check that the file references no data-access type.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `tests/check_hub_is_conduit.sh` → **"OK: … derives from Hub, logs the lifecycle, and names no data-access type"**; `dotnet build src/Notification.Api` → "Build succeeded. 0 Warning(s) 0 Error(s)". Lifecycle logging is injected `ILogger<NotificationHub>`; the class holds no rules and no data access.
 #### Task ID: T-1.HUB.02
 - **Title**: Register SignalR and map the `/notificationHub` route
 - **Description**: Register the SignalR services (`builder.Services.AddSignalR()`) and map the hub (`app.MapHub<NotificationHub>("/notificationHub")`) in `Program.cs`, so clients can negotiate a connection on the route the contract names.
@@ -150,8 +154,9 @@
 - **Evidence**: `Program.cs` plus a negotiate request against `/notificationHub` succeeding.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `POST /notificationHub/negotiate?negotiateVersion=1` against the API run from the SDK container on host port 5000: **HTTP 200** with `connectionId`, `connectionToken` and WebSockets/ServerSentEvents/LongPolling in `availableTransports`. `builder.Services.AddSignalR()` and `app.MapHub<NotificationHub>("/notificationHub")` are the two registrations; CORS is deliberately not part of this task.
 ### Stream: `API`
 
 #### Task ID: T-1.API.01
@@ -165,8 +170,9 @@
 - **Evidence**: the DI registration in `Program.cs` plus the controller's constructor signature.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `OrdersController` takes `IHubContext<NotificationHub>` by constructor injection (line 16) and the context comes from `builder.Services.AddSignalR()`; no static or global accessor. `dotnet build` → "Build succeeded. 0 Warning(s) 0 Error(s)". Activation is proved at runtime by the 200 in `T-1.API.02`, which is the first request that reaches the controller.
 #### Task ID: T-1.API.02
 - **Title**: Implement `POST /{id}/status` — validate, then broadcast
 - **Description**: Implement the endpoint that validates the incoming status, and on success updates state and broadcasts `await _hubContext.Clients.All.SendAsync("ReceiveOrderStatus", id, status)` before returning 200. Reject invalid input with 400 **before** any broadcast; return 404 for an unknown order id. Keep validation, business rules and any transaction logic in the controller/service, never in the hub.
@@ -178,8 +184,9 @@
 - **Evidence**: the endpoint invoked through Swagger/Postman for each of the three codes, plus the assertions in T-1.TST.02 and T-1.TST.01.
 - **Estimated Effort**: M
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — against the API run from the SDK container on port 5000: valid status on a known id → **HTTP 200**; empty status → **HTTP 400** "Status must be a non-empty string."; whitespace-only status → **HTTP 400**; unknown id 99 → **HTTP 404**. Validation sits before the broadcast, so the 400 path cannot broadcast; state is in-memory (`IOrderStatusService`, singleton) because §1 excludes persistent history.
 ### Stream: `CFG`
 
 #### Task ID: T-1.CFG.01
@@ -193,8 +200,9 @@
 - **Evidence**: `appsettings.json` showing `Cors:AllowedOrigins` plus a successful cross-origin connect.
 - **Estimated Effort**: S
 - **Owner Role**: Backend Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — default `["*"]`: negotiate with `Origin` returns **`Access-Control-Allow-Origin: *`** and a real WebSocket connect with that `Origin` completes (handshake `{}`). Re-run with `Cors__AllowedOrigins__0=http://localhost:8080`: that origin is echoed back and an unconfigured `http://evil.example` gets **no** CORS header — so the list is read from configuration, not a literal. The demo-only label sits on the list in `appsettings.json` (the file still parses).
 ### Stream: `OPS`
 
 #### Task ID: T-1.OPS.01
@@ -208,8 +216,9 @@
 - **Evidence**: the `docker build` output plus a request served by the running container.
 - **Estimated Effort**: S
 - **Owner Role**: DevOps Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `docker build -t notification-api:local src/Notification.Api` succeeded from the multi-stage `Dockerfile`, and the running container answered `POST /notificationHub/negotiate?negotiateVersion=1` with **HTTP 200** while the host has **no** .NET SDK (`command -v dotnet` → missing), which is the criterion. Added `src/Notification.Api/.dockerignore` so local `bin/`/`obj/` cannot be baked into the build stage.
 #### Task ID: T-1.OPS.02
 - **Title**: `docker-compose.yml` — one-command backend on a stable port
 - **Description**: Add the compose file of §6.1 with a single `api` service building `context: ./src/Notification.Api`, publishing `5000:8080`, and setting `ASPNETCORE_ENVIRONMENT=Development` and `ASPNETCORE_URLS=http://+:8080`. Keep the future `redis` backplane service present but commented, as §6.1 shows, so the scale-out path is visible without being enabled.
@@ -221,8 +230,9 @@
 - **Evidence**: the `docker compose up --build` output plus the API reachable at `http://localhost:5000/notificationHub`.
 - **Estimated Effort**: M
 - **Owner Role**: DevOps Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `docker compose up --build` started `demo-api-1` on **`0.0.0.0:5000->8080/tcp`** and `POST /notificationHub/negotiate?negotiateVersion=1` on host **port 5000** returned **HTTP 200**; `docker compose config` validates; the `redis` service is present as a commented future option and multi-instance scaling stays out of the demo (§1). No host .NET SDK involved.
 ### Stream: `TST`
 
 #### Task ID: T-1.TST.01
@@ -236,8 +246,9 @@
 - **Evidence**: the test file plus a green run of it.
 - **Estimated Effort**: M
 - **Owner Role**: QA / Test Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `dotnet test tests/Notification.Api.Tests` → **"Passed! - Failed: 0, Passed: 4, Skipped: 0"**. The mock is Moq over `IHubContext<NotificationHub>`/`IHubClients`/`IClientProxy`; the state is the in-memory service, so no live hub and no database. Negative control: swapping the broadcast args made the suite **red** (`Assert.Equal() Failure: Collections differ`, Failed: 1) and reverting restored green — the check is not vacuous.
 #### Task ID: T-1.TST.02
 - **Title**: Integration check against the Compose-hosted API
 - **Description**: With the backend up via `docker compose up`, connect a test client to `/notificationHub`, `POST /{id}/status` with a valid status, and assert the client receives `ReceiveOrderStatus` with the correct args. Then POST an invalid status, assert the 400 response, and assert that **no** message was broadcast.
@@ -249,8 +260,9 @@
 - **Evidence**: the check's run output against the compose-hosted API.
 - **Estimated Effort**: M
 - **Owner Role**: QA / Test Engineer
-- **Status**: TODO
+- **Status**: DONE
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — `python3 tests/check_phase1_integration.py` against the compose-hosted API (a real SignalR client over the JSON protocol, connected with a browser `Origin`): **10/10 PASS** — negotiates on host port 5000, handshake `{}`, valid status → 200 and exactly **one** `ReceiveOrderStatus` with `[1, "Out for Delivery"]`, empty status → **400 "Status must be a non-empty string."** with **nothing broadcast**, unknown id 999 → **404** with nothing broadcast. Exit 0.
 ### Phase Exit Gate
 
 #### Task ID: T-1.X.GATE
@@ -269,12 +281,14 @@
 - **Evidence**: the compose run output, the T-1.TST.02 integration check, and the port/route probe.
 - **Estimated Effort**: S
 - **Owner Role**: Tech Lead
-- **Status**: TODO
+- **Status**: DONE
 
 ---
 
 ## Phase 2 — Flutter Client Core
 
+- **Recorded**: 2026-10-15 by `/do-task-one-go` — verified in the tree from a clean `docker compose down`, not from the earlier containers. 1) `docker compose up --build` brought the API online (container `demo-api-1`, `0.0.0.0:5000->8080/tcp`). 2) A valid status reached a genuinely connected client: one `ReceiveOrderStatus` with `[1, "Out for Delivery"]`. 3) Invalid input returned **400**. 4) The API is reachable on **port 5000** (`ss` shows the listener; negotiate 200). 5) One command started a working backend. Evidence: the compose output, the port/route probe and `tests/check_phase1_integration.py` (10/10 PASS, exit 0).
+- **Review of the pushed batch (2026-10-15)**: the request's own review was asked for on `paws1234/FlutterDemo#1`; GitHub refused it (`requestReviewsByLogin` could not resolve `copilot-pull-request-reviewer`), so the automated reviewer still has to be added by hand from that PR's Reviewers menu. In its place the pushed diff was read again **from the PR** (`gh pr diff 1` — 99 files: 33 written here, 66 generated by `flutter create`), the code-review list was walked, and the reviewer's edge cases were probed against the live API: no body **400**, `null` body **400**, non-integer id **400**, `text/plain` **415**, valid **200** — no 500 anywhere. **No finding**, so there is no owning id and no fix commit. No checks are reported on the branch because this repository has no pipeline; the ledger's own checks were run locally and were green.
 ### Stream: `CONN`
 
 #### Task ID: T-2.CONN.01

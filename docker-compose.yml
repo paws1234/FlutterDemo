@@ -1,0 +1,21 @@
+# One command brings the backend online on a stable port (plan §6.1, §6.3).
+# `docker compose up --build` → the API answers on http://localhost:5000.
+services:
+  api:
+    build:
+      context: ./src/Notification.Api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080" # host:container — stable so the Flutter client's URL never changes
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    # Optional later: depends_on: [redis]
+
+  # Future scale-out option, documented but deliberately not enabled (§1 Out of Scope keeps
+  # multi-instance scaling out of the demo): a Redis backplane needs StackExchangeRedis in the
+  # API and this second service. Uncomment both once the app is to run multi-instance.
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"

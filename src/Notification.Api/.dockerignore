@@ -1,0 +1,4 @@
+# Local build output must never be copied into the image: a stale obj/ from a
+# different machine or SDK breaks restore inside the build stage.
+bin/
+obj/

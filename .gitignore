@@ -1,1 +1,14 @@
 .github
+
+# .NET build output
+bin/
+obj/
+
+# Flutter / Dart build output and IDE files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.idea/
+*.iml
+*.log
